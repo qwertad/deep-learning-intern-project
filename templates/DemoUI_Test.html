@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+
+    <!-- 照片 -->
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js">
+    </script> 
+
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <!--  
+    <script src="https://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js">
+    </script> -->
+  
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  <div class="container">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <h1 class="text-center text-info">遠紡工業</h1>
+    </div>
+  </div>
+  <div class="row clearfix">
+    <!-- 車1 -->
+    <div class="col-md-6 column">
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <div class="text-info">
+              <h4>
+                <div class="p-3 mb-2 bg-info text-white">裝車作業單號 
+              </h4>
+              <h6 class="text-info">
+                <label for="bookdate">日期：</label> <input type="date" id="date1" placeholder="2018-08-01">
+              </h6>
+          </div>
+
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+
+              <!-- 發貨單號 -->
+              <form role="form" method="post" id="invoice_1">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="invoice1" name="invoice1" /> 
+                 <!--  disabled="false" -->      
+                </div>
+              </form>
+
+              <form action="/somewhere/to/upload" method="post" enctype="multipart/form-data" id="LPN_1">
+                <!-- 真正的文件上传表单 -->
+                <input name="LPN1" type="file" id="LPN1" style="display: none" accept="image/gif, image/jpeg, image/png" /> 
+               
+                <div class="input-append">   
+                  <!-- 点击触发按钮 -->
+                  <button type="button" class="btn btn-default btn-block btn-info" onclick="makeThisfile()" id="browse1" >掃描裝車作業單</button>
+                </div>  
+             <br>
+
+              <script type="text/javascript">
+              //觸發隱藏的file表單
+              function makeThisfile(){
+                      $('#LPN1').click();
+              }
+              </script> 
+             
+              </div>
+            </div>
+          </div>
+        <div class="col-md-5 column">
+
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" >
+            <div id="LPN1_imgs"> </div>     
+          </form>
+
+          <!-- JavaScript part -->
+          <script>
+            $("#LPN1").change(function(){
+              $("#LPN1_imgs").html(""); // 清除預覽
+              readURLC(this);
+            });
+
+            function readURLC(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var readerC = new FileReader();
+                    readerC.onload = function (e) {
+                      var imgC = $("<img height=165x >").attr('src', e.target.result);
+                        $("#LPN1_imgs").append(imgC);
+                    }
+                    readerC.readAsDataURL(input.files[i]);
+                }
+              }else{
+                var noPictures = $("");
+                $("#LPN1_imgs").append(noPictures);
+               }
+            }
+          </script>  
+
+          <div class="col-md-16 column">
+            <button type="button" class="btn btn-default btn-block btn-info" id="LPNcheck1">確定</button>
+          </div>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <br>
+
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info active">
+              <input type="radio" name="cartype1" id="carone0" value="0" autocomplete="off" checked> 集裝箱
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype1" id="carone1" value="1" autocomplete="off"> 平板車
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype1" id="carone2" value="2" autocomplete="off"> 飛翼車
+            </label>
+          </div>
+
+          <br><br>
+
+          <!-- HTML part -->
+          <form id="photo_1" method="post" enctype="multipart/form-data">
+            <input type="file" name="photo1" id="photo1" accept="image/gif, image/jpeg, image/png" multiple/ >
+            <div  id="photo1_imgs"> </div>     
+          </form>
+          <!-- JavaScript part -->
+          <script>
+
+            $("#photo1").change(function(){
+              // $("#photo1_imgs").html(""); // 清除預覽
+              readURL(this);
+            });
+
+
+            function readURL(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var reader = new FileReader();
+                  reader.onload = function (e) {
+                  var img = $("<img width=20%>").attr('src', e.target.result);
+                    $("#photo1_imgs").append(img);
+                  }
+                reader.readAsDataURL(input.files[i]);
+                }
+              }else{
+                  var noPictures = $("");
+                  $("#photo1_imgs").append(noPictures);
+               }
+            }
+          </script>  
+          <br>
+          <h6 id="result">
+            <span> </span>
+          </h6>
+          <h6 id="resultX">
+            <span> </span>
+          </h6>
+
+          <button type="photocheck" class="btn btn-default btn-block btn-info" id="photodel1">清除重選</button>
+
+        </div>        
+        <div class="col-md-5 column" >
+          <div class="checkbox1">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox1" id="checkbox1car"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox1" id="checkbox1box"/>櫃號</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox1" id="checkbox1empty"/>空櫃</label>
+              </div>
+              <div class="checkfull">
+                <label><input type="checkbox" name="checkbox1" id="checkbox1full"/>滿車</label>
+              </div>
+              <div class="checklabel">
+                <label><input type="checkbox" name="checkbox1" id="checkbox1label"/>鉛封</label>
+              </div>
+              <br>
+            </form> 
+          </div>
+          <div class="checkbox1T" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox1T" id="checkbox1Tcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox1T" id="checkbox1Tempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox1T" id="checkbox1Tfull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+          <div class="checkbox1F" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox1F" id="checkbox1Fcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox1F" id="checkbox1Fempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox1F" id="checkbox1Ffull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+        </div>
+
+      </div> 
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <br>
+          <button type="button" class="btn btn-default btn-block btn-info" id="done1" >確認上傳</button>
+          <br>
+        </div>
+      </div>
+    </div>
+
+    <!-- 車2 -->
+    <div class="col-md-6 column">
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <div class="text-info">
+              <h4>
+                <div class="p-3 mb-2 bg-info text-white">發貨單號 
+              </h4>
+              <h6 class="text-info">
+                <label for="bookdate">日期：</label> <input type="date" id="date1" placeholder="2018-08-01">
+              </h6>
+          </div>
+          <div class="row clearfix">
+            <div class="col-md-12 column">
+              <form role="form" method="post" id="invoice_2">
+                <div class="form-group" >
+                   <input type="invoice" class="form-control" id="invoice2" />
+                </div>
+              </form>
+
+              <form action="/somewhere/to/upload" enctype="multipart/form-data" method="post" id="LPN_2">
+                <!-- 真正的文件上传表单 -->
+                <input name="LPN2" type="file" id="LPN2" style="display: none" accept="image/gif, image/jpeg, image/png" /> 
+                <div class="input-append">   
+                <!-- 点击触发按钮 -->
+                  <button type="button" class="btn btn-default btn-block btn-info" onclick="makeThisfile2()" id="browse2" >上傳車號圖片</button>
+                </div>  
+                <br>
+
+              <script type="text/javascript">
+                //觸發隱藏的file表單
+                function makeThisfile2(){
+                  $('#LPN2').click();
+                }
+              </script> 
+            </div>  
+          </div>
+        </div>
+        <div class="col-md-5 column">
+
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" >
+            <div id="LPN2_imgs" > </div>     
+          </form>
+
+          <!-- JavaScript part -->
+          <script>
+            $("#LPN2").change(function(){
+              $("#LPN2_imgs").html(""); // 清除預覽
+              readURLC2(this);
+            });
+
+            function readURLC2(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var readerC2 = new FileReader();
+                  readerC2.onload = function (e) {
+                    var imgC2 = $("<img height=165x>").attr('src', e.target.result);
+                    $("#LPN2_imgs").append(imgC2);
+                  }
+                  readerC2.readAsDataURL(input.files[i]);
+                }
+              }else{
+                   var noPictures = $("");
+                   $("#LPN2_imgs").append(noPictures);
+               }
+            }
+          </script>       
+          
+          <button type="button" class="btn btn-default btn-block btn-info" id="LPNcheck2">確定</button>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+
+          <br>
+
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info active">
+              <input type="radio" name="cartype2" id="cartype2_0" value="0" autocomplete="off" checked> 集裝箱
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype2" id="cartype2_1" value="1" autocomplete="off"> 平板車
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype2" id="cartype2_2" value="2" autocomplete="off"> 飛翼車
+            </label>
+          </div>
+
+          <br><br>
+
+
+          <!-- HTML part -->
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" id=photo_2>
+            <input type="file" id="photo2" name="photo2" ="image/gif, image/jpeg, image/png" multiple/ >
+            <div id="photo2_imgs">  </div>     
+          </form>
+
+          <!-- JavaScript part -->
+          <script >
+            $("#photo2").change(function(){
+              // $("#photo2_imgs").html(""); // 清除預覽
+                readURL1(this);
+            });
+
+            function readURL1(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var reader1 = new FileReader();
+                  reader1.onload = function (e) {
+                      var img1 = $("<img width=20%>").attr('src', e.target.result);
+                      $("#photo2_imgs").append(img1);
+                  }
+                  reader1.readAsDataURL(input.files[i]);
+                  }
+                }else{
+                   var noPictures = $("");
+                   $("#photo2_imgs").append(noPictures);
+                 }
+            }
+          </script>      
+
+          <br> 
+
+          <button type="photocheck" class="btn btn-default btn-block btn-info" id="photodel2" >清除重選</button>
+
+        </div>
+        <div class="col-md-5 column">
+          <div class="checkbox2">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox2" id="checkbox2car"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox2" id="checkbox2box"/>櫃號</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox2" id="checkbox2empty"/>空櫃</label>
+              </div>
+              <div class="checkfull">
+                <label><input type="checkbox" name="checkbox2" id="checkbox2full"/>滿車</label>
+              </div>
+              <div class="checklabel">
+                <label><input type="checkbox" name="checkbox2" id="checkbox2label"/>鉛封</label>
+              </div>
+              <br>
+            </form> 
+          </div>
+          <div class="checkbox2T" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox2T" id="checkbox2Tcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox2T" id="checkbox2Tempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox2T" id="checkbox2Tfull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+          <div class="checkbox2F" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox2F" id="checkbox2Fcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox2F" id="checkbox2Fempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox2F" id="checkbox2Ffull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>     
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <br> 
+          <button type="button" class="btn btn-default btn-block btn-info" id="done2" >確認上傳</button>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<br>
+
+<div class="row clearfix">
+    <!-- 車3 -->
+    <div class="col-md-6 column">
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <div class="text-info">
+              <h4>
+                <div class="p-3 mb-2 bg-info text-white">發貨單號 
+              </h4>
+              <h6 class="text-info">
+                <label for="bookdate">日期：</label> <input type="date" id="date1" placeholder="2018-08-01">
+              </h6>
+          </div>
+          <div class="row clearfix">
+            <div class="col-md-12 column">
+
+              <form role="form" method="post" id="invoice_3">
+                <div class="form-group">
+                   <input type="invoice" class="form-control" id="invoice3" />
+                </div>
+              </form>
+
+              <form action="/somewhere/to/upload" enctype="multipart/form-data" method="post" id="LPN_3">
+              <!-- 真正的文件上传表单 -->
+              <input name="LPN3" type="file" id="LPN3" style="display: none" accept="image/gif, image/jpeg, image/png" /> 
+              
+              <div class="input-append">   
+                <!-- 点击触发按钮 -->
+                <button type="button" class="btn btn-default btn-block btn-info" onclick="makeThisfile3()" id="browse3" >上傳車號圖片</button>
+              </div>
+              <br>
+              <script type="text/javascript">
+                //觸發隱藏的file表單
+                function makeThisfile3(){
+                  $('#LPN3').click();
+                }
+              </script> 
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5 column">
+
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" >
+            <div id="LPN3_imgs"> </div>     
+          </form>
+
+          <!-- JavaScript part -->
+          <script>
+            $("#LPN3").change(function(){
+              $("#LPN3_imgs").html(""); // 清除預覽
+              readURLC3(this);
+              });
+
+            function readURLC3(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var readerC3 = new FileReader();
+                  readerC3.onload = function (e) {
+                  var imgC3 = $("<img height=165x>").attr('src', e.target.result);
+                    $("#LPN3_imgs").append(imgC3);
+                  }
+                  readerC3.readAsDataURL(input.files[i]);
+                }
+              }else{
+                   var noPictures = $("");
+                   $("#LPN3_imgs").append(noPictures);
+                 }
+            }
+          </script>
+
+          <div class="col-md-14 column">
+            <button type="button" class="btn btn-default btn-block btn-info" id="LPNcheck3">確定</button>
+          </div>
+
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <br>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info active">
+              <input type="radio" name="cartype3" id="cartype3_0" value="0" autocomplete="off" checked> 集裝箱
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype3" id="cartype3_1" value="1" autocomplete="off"> 平板車
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype3" id="cartype3_2" value="2" autocomplete="off"> 飛翼車
+            </label>
+          </div>
+          <br><br>
+          <!-- HTML part -->
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" id="photo_3">
+            <input type="file" name="photo3" id="photo3" accept="image/gif, image/jpeg, image/png" multiple/ >
+            <div  id="photo3_imgs" > </div>     
+          </form>
+          <!-- JavaScript part -->
+          <script>
+            $("#photo3").change(function(){
+              // $("#photo3_imgs").html(""); // 清除預覽
+              readURL3(this);
+            });
+            function readURL3(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var reader3 = new FileReader();
+                  reader3.onload = function (e) {
+                    var img3 = $("<img width=20%>").attr('src', e.target.result);
+                      $("#photo3_imgs").append(img3);
+                  }
+                  reader3.readAsDataURL(input.files[i]);
+                }
+              }else{
+                  var noPictures = $("");
+                  $("#photo3_imgs").append(noPictures);
+               }
+            }
+          </script>  
+          <br> 
+          <button type="photocheck" class="btn btn-default btn-block btn-info" id="photodel3">清除重選</button>
+        </div>
+            
+        <div class="col-md-5 column">
+          <div class="checkbox3">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox3" id="checkbox3car"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox3" id="checkbox3box"/>櫃號</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox3" id="checkbox3empty"/>空櫃</label>
+              </div>
+              <div class="checkfull">
+                <label><input type="checkbox" name="checkbox3" id="checkbox3full"/>滿車</label>
+              </div>
+              <div class="checklabel">
+                <label><input type="checkbox" name="checkbox3" id="checkbox3label"/>鉛封</label>
+              </div>
+              <br>
+            </form> 
+          </div>
+          <div class="checkbox3T" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox3T" id="checkbox3Tcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox3T" id="checkbox3Tempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox3T" id="checkbox3Tfull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+          <div class="checkbox3F" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox3F" id="checkbox3Fcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox3F" id="checkbox3Fempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox3F" id="checkbox3Ffull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+        </div>
+      </div>   
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <br> 
+           <button type="button" class="btn btn-default btn-block btn-info" id="done3" >確認上傳</button>
+           <br>
+        </div>
+      </div>
+    </div>
+
+    <!-- 車4 -->
+    <div class="col-md-6 column">
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <div class="text-info">
+              <h4>
+                <div class="p-3 mb-2 bg-info text-white">發貨單號 
+              </h4>
+              <h6 class="text-info">
+                <label for="bookdate">日期：</label> <input type="date" id="date1" placeholder="2018-08-01">
+              </h6>
+          </div>
+          <div class="row clearfix">
+            <div class="col-md-12 column">
+              <form role="form" method="post" id="invoice_4">
+                <div class="form-group">
+                   <input type="invoice" class="form-control" id="invoice4" />
+                </div>
+                </form>
+
+                <form action="/somewhere/to/upload" enctype="multipart/form-data" method="post" id="LPN_4">
+                <!-- 真正的文件上传表单 -->
+                <input name="LPN4" type="file" id="LPN4" style="display: none" accept="image/gif, image/jpeg, image/png" /> 
+                 
+                <div class="input-append">   
+                <!-- 点击触发按钮 -->
+                  <button type="button" class="btn btn-default btn-block btn-info" onclick="makeThisfile4()" id="browse4" >上傳車號圖片</button>
+                </div>  
+               <br>
+
+               <script type="text/javascript">
+                //觸發隱藏的file表單
+                function makeThisfile4(){
+                  $('#LPN4').click();
+                }
+              </script> 
+            </div>  
+          </div>
+        </div>
+        <div class="col-md-5 column">
+          <form action="/somewhere/to/upload" enctype="multipart/form-data" >
+            <div id="LPN4_imgs" > </div>     
+          </form>
+          <!-- JavaScript part -->
+          <script>
+            $("#LPN4").change(function(){
+              $("#LPN4_imgs").html(""); // 清除預覽
+              readURLC4(this);
+            });
+
+            function readURLC4(input){
+              if (input.files && input.files.length >= 0) {
+                for(var i = 0; i < input.files.length; i ++){
+                  var readerC4 = new FileReader();
+                  readerC4.onload = function (e) {
+                    var imgC4 = $("<img height=165x>").attr('src', e.target.result);
+                    $("#LPN4_imgs").append(imgC4);
+                  }
+                  readerC4.readAsDataURL(input.files[i]);
+                }
+              }else{
+                 var noPictures = $("");
+                 $("#LPN4_imgs").append(noPictures);
+               }
+            }
+          </script>
+
+          <button type="button" class="btn btn-default btn-block btn-info" id="LPNcheck4" >確定</button>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-7 column">
+          <br>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-info active">
+              <input type="radio" name="cartype4" id="cartype4_0" value="0" autocomplete="off" checked> 集裝箱
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype4" id="cartype4_1" value="1" autocomplete="off"> 平板車
+            </label>
+            <label class="btn btn-info">
+              <input type="radio" name="cartype4" id="cartype4_2" value="2" autocomplete="off"> 飛翼車
+            </label>
+          </div>
+          <br><br>
+          <!-- HTML part -->
+          <form action="/somewhere/to/upload" method="post" id="photo_4" enctype="multipart/form-data">
+            <input type="file" id="photo4" accept="image/gif, image/jpeg, image/png" multiple/ >
+            <div id="photo4_imgs"> </div>     
+          </form>
+          <!-- JavaScript part -->
+            <script >
+              $("#photo4").change(function(){
+                // $("#photo4_imgs").html(""); // 清除預覽
+                  readURL4(this);
+                });
+
+              function readURL4(input){
+                if (input.files && input.files.length >= 0) {
+                  for(var i = 0; i < input.files.length; i ++){
+                    var reader4 = new FileReader();
+                    reader4.onload = function (e) {
+                      var img4 = $("<img width=20%>").attr('src', e.target.result);
+                        $("#photo4_imgs").append(img4);
+                    }
+                    reader4.readAsDataURL(input.files[i]);
+                  }
+                }else{
+                   var noPictures = $("");
+                   $("#photo4_imgs").append(noPictures);
+                 }
+              }
+            </script>  
+            <br> 
+            <button type="photocheck" class="btn btn-default btn-block btn-info" id="photodel4">清除重選</button>    
+        </div>
+        <div class="col-md-5 column">
+          <div class="checkbox4">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox4" id="checkbox4car"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox4" id="checkbox4box"/>櫃號</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox4" id="checkbox4empty"/>空櫃</label>
+              </div>
+              <div class="checkfull">
+                <label><input type="checkbox" name="checkbox4" id="checkbox4full"/>滿車</label>
+              </div>
+              <div class="checklabel">
+                <label><input type="checkbox" name="checkbox4" id="checkbox4label"/>鉛封</label>
+              </div>
+              <br>
+            </form> 
+          </div>
+          <div class="checkbox4T" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox4T" id="checkbox4Tcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox4T" id="checkbox4Tempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox4T" id="checkbox4Tfull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+          <div class="checkbox4F" style="display:none;">
+            <form role="form">
+              <br>
+              <div class="checkcar" >
+                <label><input type="checkbox" name="checkbox4F" id="checkbox4Fcar"/>車號</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="checkbox4F" id="checkbox4Fempty"/>空車</label>
+              </div>
+              <div class="checkempty">
+                <label><input type="checkbox" name="checkbox4F" id="checkbox4Ffull"/>滿車</label>
+              </div>
+              <br>
+              <br>
+            </form>     
+          </div>
+        </div>
+      </div>
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+          <br> 
+          <button type="button" class="btn btn-default btn-block btn-info" id="done4">確認上傳</button>
+          <br>
+        </div>
+      </div>
+    </div>
+</div>
+
+<br>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+</body>
+
+<footer>
+    <script src="{{ url_for('static', filename='js/Demo_main.js') }}" type="text/javascript"></script>    
+</footer>
+
+</html>
